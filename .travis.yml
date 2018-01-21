@@ -32,8 +32,7 @@ install:
 
 script:
   - find tasks -type f -exec echo Validating {} \; -exec ansible-lint {} \;
-  - set -e
-  - molecule --debug create
+  - molecule create
   - molecule converge
   - molecule verify
 
