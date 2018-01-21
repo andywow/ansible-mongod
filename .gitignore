@@ -10,3 +10,4 @@ pythonenv/**
 # GCE keys
 gcekey.json
 google_compute_engine
+secret.tar
