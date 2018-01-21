@@ -8,6 +8,8 @@
 # virtualenv
 pythonenv/**
 # GCE keys
-gcekey.json
+gcetravisci.json
 google_compute_engine
 *.tar
+# setup env
+setup.sh
