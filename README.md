@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/andywow/ansible-mongod.svg?branch=travis)](https://travis-ci.org/andywow/ansible-mongod)
+[![Build Status](https://travis-ci.org/andywow/ansible-mongod.svg?branch=master)](https://travis-ci.org/andywow/ansible-mongod)
 
 Role Name
 =========
