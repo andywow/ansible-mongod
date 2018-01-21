@@ -17,7 +17,6 @@ env:
   # account email
   - secure: "kswOlX9r/BlK5KvxYUG/AZtvCpYNJExZJEjWqUZfB8moPJZuFF1HSN7IqYeakcWogmMb2vkjQuZrFAZE8JngBfzxhOAMws+WVkWeoSvzUHcBpH5fl+iVuyqNRCHECjbIUvGaF+AUz4xD/VizZ/rqwNi3dQTbDm+rznskjIew3IGGR54tC//Kq11fgGTklMCAM4sjp0Z15NHWkRG99NqddmSgvmYyW8QBzkAv4uGLzBp3DuNA70XdSSqK+nRDT5p2x/dfJotV02IgzZpczClLe/uS+Mp/jj5IyfrUE5n4tQKHAy/YsThBaq0oLLl42TUrBRFfGeqhGun8wd8WC+5n29GiAI2PxjXV3Q5k8gfIifCG85A736TS20q1iLAqJd1vhzTQLpIJOl/Kieuyh2clBSxHFdji6OBxDahvz2Twi88K6nMPM/xvr4kwv6bUbm30bNtMLEh++X+Ksxfplq6xT2EBdf5zfmPnG2W+Z9VoBxem+Gp7z6E6zjQsAdF9ps1bsc3ueUmVOlqvAi3Hkra4WlOpaqtT1ZFDey4xHhh+j7g82Rq+NgzRFnEpYoO09T6PkJQiCU8EzJFhYx03PwwMhYiiKPOpEJQGKbdyWlFX+GDlp69kHvMI1jnNDq+uj21FHCP3aNSJGO0YOuJ/YZSDp5XP9q1lA2nGPzMOZE/puSA="
 
-
 before_install:
   - openssl aes-256-cbc -K $encrypted_9b768088574b_key -iv $encrypted_9b768088574b_iv -in secrets.tar.enc -out secrets.tar -d
   - tar xvf secrets.tar
@@ -31,12 +30,12 @@ install:
 
 script:
   - find tasks -type f -exec echo Validating {} \; -exec ansible-lint {} \;
-  - molecule create
+  - molecule --debug create
   - molecule converge
   - molecule verify
 
 after_script:
-  - molecule_destroy
+  - molecule destroy
 
 notifications:
   email: false
