@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/andywow/ansible-mongod.svg?branch=travis)](https://travis-ci.org/andywow/ansible-mongod)
+
 Role Name
 =========
 
