@@ -1,43 +1,42 @@
-# sudo-enabled Ubuntu Trusty
 dist: trusty
-
-# running each build in docker container - cause speed
 sudo: false
 
 language: python
-python: "2.7"
+python: '2.7'
 
 branches:
   only:
   - master
   - travis
 
-#b619fafb25fa5ad9abf6192955d30d58139ec6d5
-
 env:
   global:
-    GCE_CREDENTIALS_FILE="${TRAVIS_BUILD_DIR}/gcekey.json"
+  - GCE_CREDENTIALS_FILE="${TRAVIS_BUILD_DIR}/gcekey.json"
+  - secure: bodHuvKUU5ckKvo5iJ6zpIuC/h5Afv9RLvxeflfpQft/gjm4i35eHdglAP37ArK++a9yPe6Etv4Q1MpOme+5wOWOVxqANfXqHajiQ5gxd5FjD/FQaluNM68S/R4egJUwp+Yy7FirdTeIRgZ5m+RAtaHYJ2Y7beE5ZakQOXDTOYOtCPwd+2IoZCX3vHVD2mn+tioz+w4NA6la9H7GAadzr2jAEynSHNhbEa+DH4ISjBUXv25l2PCkSZpcNlMWyIYxrVsT+SfNeBOPeFL/YXEb/TOiAck2DfMuHGrzvMiGuaqdzop+1AYkxQhAldNBZfZHrn1ZD5fUGyWPkSydxs5QlZtP9EYq0Rtbr6ZywRv4pP5YaEdldmsUm3ZKdOV/+LjLOK2jMsMhUFypuPwOwiwIrAhZYtSJDSOyLHV1LMUp3kNzzFf/dIVcRzVsg/SzurBM3ysRYxFSUUHjxMiBZyl2uJ2oroPCqgjbYcKwtsVnvmEA3vSujGlkfgeYvdIOo5GHQf/U1Mc5xbVwqBIjT3ZWqQKlvSt+1QDt2gasWKpkNhdkC6VYCACGAAfOI3SGyyl8z6p7etmyQhaftQE7FzIY5Q87eDg+Bgx+N11qKKzYkrVexv3IRqW81cMSTxfAZ5fmac8dcsgdiHXvxo7OjT2t8FVWzvsbr81pbSIgOQPOqcE=
+  - secure: G+wIcwc1fxNlVEf8RfUFNDe0zZ0jTwnxwCNUA60HCmjfQYZfx/ohkEEAfzhgWOXu1YUBFv+q/53Ycq9Z9QFvPVyDlGGZxnWV6ZkCXTGe40wrF1M9Y6GdjgRBFBz2FAkXdJVSx6RhvvlksQDReJRAeZAIEIfXpGuFEc4NuF/Tl/HyOn7EQwkl2YVdTSpUwkB5hGak5eN2Dhz2BzehIZt5/330OTUs+VLNdVkzA+OXlJ65WZMSaurnJqcY9HPj1e6GK02E6X/nVqIa2hx+ru1mmivXVI2QinFY7BJf+kZi2MvjgD00atE5c1raEo2iOmuhdEaO6sArqiwEmK8MpcvWh+dvO/STz5y/QGIVPyVCxk/0HbVLWb9iW3adtS1rN+4Utvz+dY5s5PFANYOvhWzP8vhq0zvuidhgjN8wh9Z2RRjppyL2dN/OWuXzsLZRMNEKN4gLxCW+HWLA6M9R4iGaQZnvzmjjkCFT27d/rIgRT3D4Mw34fkJqKoiRa/ehD3LEdgwkB8RzFtbPu5UPMhqe1eulRvhjNbNI04d/GTEmD2gQbRLlhNStdMkwNHyRfXhsO57s7fcN9kOScb8CuC24o1HVXq+ZeIuL1u4PaeW4LP0eya8pHRe7oMILuvWRFYpP4Pbp6znprZbIj0cW14KCaxtD7C2ZMHe9jgxuNJSrhhM=
 
 before_install:
-  # encrypting private gce key
-  - openssl aes-256-cbc -K $encrypted_9b768088574b_key -iv $encrypted_9b768088574b_iv -in gcekey.json.enc -out gcekey.json -d
-
+  - openssl aes-256-cbc -K $encrypted_9b768088574b_key -iv $encrypted_9b768088574b_iv
+    -in secret.tar.enc -out secret.tar -d
+  - tar xvf secrets.tar
+  - mv google_compute_engine ${HOME}/.ssh/
+  - chmod 0600 ${HOME}/.ssh/google_compute_engine
 
 install:
-  # getting modules
-  - pip install ansible==2.4.0 molecule testinfra apache-libcloud
+  - pip install ansible==2.4.0 molecule testinfra apache-libcloud PyCrypto
   - ansible --version
+  - molecule --version
 
 script:
-  # validating ansible tasks
   - find tasks -type f -exec echo Validating {} \; -exec ansible-lint {} \;
-
-  # molecule tasks
   - molecule create
+  - molecule converge
+  - molecule verify
 
 after_script:
-  # destroy instance
   - molecule_destroy
 
 notifications:
   email: false
+
+
