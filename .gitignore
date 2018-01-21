@@ -1,0 +1,10 @@
+# common
+*.log
+*.backup
+# molecule
+*.pyc
+.molecule
+.cache
+# virtualenv
+pythonenv/**
+
