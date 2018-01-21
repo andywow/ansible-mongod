@@ -12,16 +12,32 @@ branches:
   - master
   - travis
 
-install:
+#b619fafb25fa5ad9abf6192955d30d58139ec6d5
 
+env:
+  global:
+    GCE_CREDENTIALS_FILE="${TRAVIS_BUILD_DIR}/gcekey.json"
+
+before_install:
+  # encrypting private gce key
+  - openssl aes-256-cbc -K $encrypted_9b768088574b_key -iv $encrypted_9b768088574b_iv -in gcekey.json.enc -out gcekey.json -d
+
+
+install:
   # getting modules
-  - pip install ansible==2.4.0 molecule apache-libcloud
+  - pip install ansible==2.4.0 molecule testinfra apache-libcloud
   - ansible --version
 
 script:
-
   # validating ansible tasks
   - find tasks -type f -exec echo Validating {} \; -exec ansible-lint {} \;
+
+  # molecule tasks
+  - molecule create
+
+after_script:
+  # destroy instance
+  - molecule_destroy
 
 notifications:
   email: false
