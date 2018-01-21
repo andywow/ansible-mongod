@@ -7,5 +7,6 @@
 .cache
 # virtualenv
 pythonenv/**
-# GCE key
+# GCE keys
 gcekey.json
+google_compute_engine
