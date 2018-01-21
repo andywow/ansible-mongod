@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/andywow/ansible-mongod.svg?branch=master)](https://travis-ci.org/andywow/ansible-mongod)
 
-Role Name
+ansible-mongod
 =========
 
 Роль для развертывания MongoDB
