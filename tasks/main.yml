@@ -4,6 +4,8 @@
 - name: Show info about the env
   debug:
     msg: "This host is in {{env}} environment"
+  tags:
+    - mongo
 
 - import_tasks: install_mongo.yml
 - import_tasks: config_mongo.yml
